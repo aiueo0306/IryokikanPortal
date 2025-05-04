@@ -35,7 +35,7 @@ def generate_rss(items, output_path):
     print(f"\n✅ RSSフィード生成完了！📄 保存先: {output_path}")
 
 def extract_items(page):
-    page.goto(URL, timeout=30000)
+    page.goto(DEFAULT_LINK, timeout=30000)
     page.wait_for_load_state("networkidle")  # or 'domcontentloaded'
     page.wait_for_selector("div.summary-templates", timeout=10000)
     
