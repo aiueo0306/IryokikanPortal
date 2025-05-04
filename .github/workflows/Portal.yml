@@ -23,11 +23,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install feedgen playwright
+          pip install requests feedgen playwright
           playwright install chromium
 
-      - name: Run RSS generator
-        run: python RSS.py  # ← ここを変更
+      - name: Run RSS.py
+        run: python RSS.py  # ← ファイル名が正確であることを確認
 
       - name: Commit and push changes
         run: |
