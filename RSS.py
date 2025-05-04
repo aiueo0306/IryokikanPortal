@@ -41,39 +41,37 @@ def extract_items(page):
     print(f"📦 発見した更新情報行数: {count}")
     items = []
 
-    for i in range(count):
-        row = rows.nth(i)
-        try:
-            # 日付の取得
-            time_elem = row.locator("sn-time-ago > time")
-            time_str = time_elem.get_attribute("title")  # 例: "2025-04-16 17:56:28"
+for i in range(count):
+    row = rows.nth(i)
+    try:
+        time_elem = row.locator("sn-time-ago > time")
+        time_str = time_elem.get_attribute("title")
+        if time_str:
+            pub_date = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+        else:
+            pub_date = datetime.now(timezone.utc)
 
-            if time_str:
-                pub_date = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-            else:
-                pub_date = datetime.now(timezone.utc)
+        # シンプルな description 抽出（例：記事本文のみ）
+        description_html = row.locator("div.kb-description").inner_text().strip()
 
-            # コンテンツ抽出
-            content_html = row.inner_html().strip()
-            a_links = row.locator("a")
-            first_link = DEFAULT_LINK
-            if a_links.count() > 0:
-                href = a_links.first.get_attribute("href")
-                if href:
-                    first_link = urljoin(BASE_URL, href)
+        a_links = row.locator("a")
+        first_link = DEFAULT_LINK
+        if a_links.count() > 0:
+            href = a_links.first.get_attribute("href")
+            if href:
+                first_link = urljoin(BASE_URL, href)
 
-            content_html = content_html.replace('href="/', f'href="{BASE_URL}')
+        items.append({
+            "title": f"更新情報: {pub_date.strftime('%Y-%m-%d')}",
+            "link": first_link,
+            "description": description_html,
+            "pub_date": pub_date
+        })
 
-            items.append({
-                "title": f"更新情報: {pub_date.strftime('%Y-%m-%d')}",
-                "link": first_link,
-                "description": content_html,
-                "pub_date": pub_date
-            })
+    except Exception as e:
+        print(f"⚠ 行{i+1}の解析に失敗: {e}")
+        continue
 
-        except Exception as e:
-            print(f"⚠ 行{i+1}の解析に失敗: {e}")
-            continue
 
     return items
 
