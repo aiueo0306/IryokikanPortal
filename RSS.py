@@ -35,7 +35,7 @@ def generate_rss(items, output_path):
     print(f"\n✅ RSSフィード生成完了！📄 保存先: {output_path}")
 
 def extract_items(page):
-    selector = "div.summary-templates > div.kb-template.ng-scope > div:nth-child(2) > div > div > div:nth-child(1)"
+    selector = "div.summary-templates > div.kb-template.ng-scope > div:nth-child(2) > div > div > div"
     rows = page.locator(selector)
     count = rows.count()
     print(f"📦 発見した更新情報行数: {count}")
