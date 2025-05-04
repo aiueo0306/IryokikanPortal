@@ -43,10 +43,10 @@ def extract_items(page):
     rows = page.locator(selector)
     count = rows.count()
     print(f"📦 発見した更新情報行数: {count}")
-
-　　import sys
-　　print("一時停止（デバッグ用）")
-　　sys.exit()
+    
+    import sys
+    print("一時停止（デバッグ用）")
+    sys.exit()
     
     items = []
 
