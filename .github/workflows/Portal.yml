@@ -23,8 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests feedgen playwright
-          playwright install chromium
+      - run: pip install -r requirements.txt
 
       - name: Run RSS.py
         run: python RSS.py  # ← ファイル名が正確であることを確認
