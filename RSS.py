@@ -29,4 +29,6 @@ for article in soup.find_all('div', class_='kb-article'):
     fe.pubDate(pub_date)
 
 # RSSフィードをXMLとして保存
+import os
+os.makedirs('rss_output', exist_ok=True)
 fg.rss_file('rss_output/iryohokenjoho.xml')
