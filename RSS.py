@@ -36,13 +36,13 @@ def generate_rss(items, output_path):
 
 def extract_items(page):
     page.goto(URL, timeout=30000)
-　　page.wait_for_load_state("networkidle")  # or 'domcontentloaded'
-　　page.wait_for_selector("div.summary-templates", timeout=10000)
-
-　　selector = "div.summary-templates div.kb-template"
-　　rows = page.locator(selector)
-　　count = rows.count()
-　　print(f"📦 発見した更新情報行数: {count}")
+    page.wait_for_load_state("networkidle")  # or 'domcontentloaded'
+    page.wait_for_selector("div.summary-templates", timeout=10000)
+    
+    selector = "div.summary-templates div.kb-template"
+    rows = page.locator(selector)
+    count = rows.count()
+    print(f"📦 発見した更新情報行数: {count}")
 
 
     items = []
