@@ -35,10 +35,15 @@ def generate_rss(items, output_path):
     print(f"\n✅ RSSフィード生成完了！📄 保存先: {output_path}")
 
 def extract_items(page):
-    selector = "div.summary-templates > div.kb-template.ng-scope > div:nth-child(2) > div > div > div"
-    rows = page.locator(selector)
-    count = rows.count()
-    print(f"📦 発見した更新情報行数: {count}")
+    page.goto(URL, timeout=30000)
+　　page.wait_for_load_state("networkidle")  # or 'domcontentloaded'
+　　page.wait_for_selector("div.summary-templates", timeout=10000)
+
+　　selector = "div.summary-templates div.kb-template"
+　　rows = page.locator(selector)
+　　count = rows.count()
+　　print(f"📦 発見した更新情報行数: {count}")
+
 
     items = []
 
