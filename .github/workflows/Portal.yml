@@ -27,7 +27,7 @@ jobs:
           playwright install chromium
 
       - name: Run RSS generator
-        run: Python　RSS.py  # ← ここを変更
+        run: Python RSS.py  # ← ここを変更
 
       - name: Commit and push changes
         run: |
