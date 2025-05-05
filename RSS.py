@@ -5,7 +5,7 @@ import os
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 BASE_URL = "https://iryohokenjyoho.service-now.com/csm?id=csm_index"
-DEFAULT_LINK = "https://iryohokenjyoho.service-now.com/csm?id=kb_search&kb_knowledge_base=..."
+DEFAULT_LINK = "https://iryohokenjyoho.service-now.com/csm?id=kb_search&kb_knowledge_base=..."  # ← 実際のURLに書き換えてください
 
 def generate_rss(items, output_path):
     fg = FeedGenerator()
@@ -41,37 +41,35 @@ def extract_items(page):
     print(f"📦 発見した更新情報行数: {count}")
     items = []
 
-for i in range(count):
-    row = rows.nth(i)
-    try:
-        time_elem = row.locator("sn-time-ago > time")
-        time_str = time_elem.get_attribute("title")
-        if time_str:
-            pub_date = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-        else:
-            pub_date = datetime.now(timezone.utc)
+    for i in range(count):
+        row = rows.nth(i)
+        try:
+            time_elem = row.locator("sn-time-ago > time")
+            time_str = time_elem.get_attribute("title")
+            if time_str:
+                pub_date = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+            else:
+                pub_date = datetime.now(timezone.utc)
 
-        # シンプルな description 抽出（例：記事本文のみ）
-        description_html = row.locator("div.kb-description").inner_text().strip()
+            description_html = row.locator("div.kb-description").inner_text().strip()
 
-        a_links = row.locator("a")
-        first_link = DEFAULT_LINK
-        if a_links.count() > 0:
-            href = a_links.first.get_attribute("href")
-            if href:
-                first_link = urljoin(BASE_URL, href)
+            a_links = row.locator("a")
+            first_link = DEFAULT_LINK
+            if a_links.count() > 0:
+                href = a_links.first.get_attribute("href")
+                if href:
+                    first_link = urljoin(BASE_URL, href)
 
-        items.append({
-            "title": f"更新情報: {pub_date.strftime('%Y-%m-%d')}",
-            "link": first_link,
-            "description": description_html,
-            "pub_date": pub_date
-        })
+            items.append({
+                "title": f"更新情報: {pub_date.strftime('%Y-%m-%d')}",
+                "link": first_link,
+                "description": description_html,
+                "pub_date": pub_date
+            })
 
-    except Exception as e:
-        print(f"⚠ 行{i+1}の解析に失敗: {e}")
-        continue
-
+        except Exception as e:
+            print(f"⚠ 行{i+1}の解析に失敗: {e}")
+            continue
 
     return items
 
