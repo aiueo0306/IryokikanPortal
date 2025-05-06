@@ -48,8 +48,8 @@ def extract_items(page):
             date_text = row.locator("div.newsDate", has_text="年").first.inner_text(timeout=5000).strip()
 
             
-            import sys
-            sys.exit()  # 任意の場所でスクリプトを終了
+            #import sys
+            #sys.exit()  # 任意の場所でスクリプトを終了
 
 
             
