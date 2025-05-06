@@ -40,7 +40,7 @@ def extract_items(page):
     items = []
 
 
-    max_items = 1  # テスト用に制限
+    max_items = 10  # テスト用に制限
     for i in range(min(count, max_items)):
         row = rows.nth(i)
         try:
